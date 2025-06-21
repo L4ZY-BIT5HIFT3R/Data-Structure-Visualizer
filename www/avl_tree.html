@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVL Tree Visualizer</title>
+    <link rel="stylesheet" href="avl_tree_styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+            <h1>AVL Tree Visualizer</h1>
+            <div class="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </div>
+        </div>
+
+        <div class="visualization">
+            <div class="tree-container">
+                <div class="tree-visualization" id="tree-visualization">
+                    <!-- Tree nodes will be dynamically added here -->
+                </div>
+                <div class="tree-info">
+                    <p>Height: <span id="tree-height">0</span></p>
+                    <p>Nodes: <span id="node-count">0</span></p>
+                </div>
+            </div>
+
+            <div class="operations">
+                <div class="op-input">
+                    <input type="number" id="node-value" placeholder="Enter node value">
+                </div>
+
+                <div class="op-buttons-container">
+                    <div class="op-buttons-group">
+                        <h3><i class="fas fa-plus-circle"></i> Insert</h3>
+                        <div class="op-buttons">
+                            <button id="insert-btn" class="insert-btn">
+                                <i class="fas fa-plus"></i> Insert
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="op-buttons-group">
+                        <h3><i class="fas fa-minus-circle"></i> Delete</h3>
+                        <div class="op-buttons">
+                            <button id="delete-btn" class="delete-btn">
+                                <i class="fas fa-minus"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="op-buttons-group">
+                        <h3><i class="fas fa-search"></i> Search</h3>
+                        <div class="op-buttons">
+                            <button id="search-btn" class="search-btn">
+                                <i class="fas fa-search"></i> Search
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="op-buttons-group">
+                        <h3><i class="fas fa-undo"></i> Other</h3>
+                        <div class="op-buttons">
+                            <button id="clear-btn" class="clear-btn">
+                                <i class="fas fa-trash"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="op-result">
+                    <div class="result-header">
+                        <i class="fas fa-info-circle"></i> Operation Result
+                    </div>
+                    <div class="result-content" id="result-content">
+                        <!-- Operation results will be shown here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="code-view">
+            <h2><i class="fas fa-code"></i> Implementation Code</h2>
+            <div class="code-tabs">
+                <button class="tab-btn active" onclick="showCode('node')">Node Class</button>
+                <button class="tab-btn" onclick="showCode('tree')">AVL Tree Class</button>
+                <button class="tab-btn" onclick="showCode('rotations')">Rotations</button>
+            </div>
+            <pre class="code" id="code-content">
+// Node Class Implementation
+class Node {
+    constructor(value) {
+        this.value = value;
+        this.left = null;
+        this.right = null;
+        this.height = 1;
+    }
+}
+            </pre>
+        </div>
+    </div>
+
+    <footer>
+        <p>Data Structure Visualizer</p>
+        <p>Created with <i class="fas fa-heart"></i> using HTML, CSS, and JavaScript</p>
+    </footer>
+
+    <!-- Load JavaScript files -->
+    <script src="avl_tree_wasm.js"></script>
+    <script src="avl_tree_app.js"></script>
+
+    <!-- Code display script -->
+    <script>
+        const codeSnippets = {
+            node: `// Node Class Implementation
+class Node {
+    constructor(value) {
+        this.value = value;
+        this.left = null;
+        this.right = null;
+        this.height = 1;
+    }
+}`,
+            tree: `// AVL Tree Class Implementation
+class AVLTree {
+    constructor() {
+        this.root = null;
+        this.nodeCount = 0;
+    }
+
+    // Get height of node
+    getHeight(node) {
+        return node ? node.height : 0;
+    }
+
+    // Get balance factor
+    getBalance(node) {
+        return node ? this.getHeight(node.left) - this.getHeight(node.right) : 0;
+    }
+
+    // Insert a node
+    insert(value) {
+        this.root = this._insert(this.root, value);
+        this.nodeCount++;
+    }
+
+    // Delete a node
+    delete(value) {
+        if (!this.search(value)) return false;
+        this.root = this._delete(this.root, value);
+        this.nodeCount--;
+        return true;
+    }
+
+    // Search for a node
+    search(value) {
+        return this._search(this.root, value);
+    }
+
+    // Get node count
+    getNodeCount() {
+        return this.nodeCount;
+    }
+}`,
+            rotations: `// AVL Tree Rotations
+class AVLTree {
+    // Right rotation
+    rightRotate(y) {
+        const x = y.left;
+        const T2 = x.right;
+
+        x.right = y;
+        y.left = T2;
+
+        // Update heights
+        y.height = Math.max(this.getHeight(y.left), 
+                           this.getHeight(y.right)) + 1;
+        x.height = Math.max(this.getHeight(x.left), 
+                           this.getHeight(x.right)) + 1;
+
+        return x;
+    }
+
+    // Left rotation
+    leftRotate(x) {
+        const y = x.right;
+        const T2 = y.left;
+
+        y.left = x;
+        x.right = T2;
+
+        // Update heights
+        x.height = Math.max(this.getHeight(x.left), 
+                           this.getHeight(x.right)) + 1;
+        y.height = Math.max(this.getHeight(y.left), 
+                           this.getHeight(y.right)) + 1;
+
+        return y;
+    }
+
+    // Balance tree after insertion/deletion
+    balance(node, value) {
+        const balanceFactor = this.getBalance(node);
+
+        // Left Left Case
+        if (balanceFactor > 1 && value < node.left.value)
+            return this.rightRotate(node);
+
+        // Right Right Case
+        if (balanceFactor < -1 && value > node.right.value)
+            return this.leftRotate(node);
+
+        // Left Right Case
+        if (balanceFactor > 1 && value > node.left.value) {
+            node.left = this.leftRotate(node.left);
+            return this.rightRotate(node);
+        }
+
+        // Right Left Case
+        if (balanceFactor < -1 && value < node.right.value) {
+            node.right = this.rightRotate(node.right);
+            return this.leftRotate(node);
+        }
+
+        return node;
+    }
+}`
+        };
+
+        function showCode(section) {
+            // Update active tab
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Update code content
+            document.getElementById('code-content').textContent = codeSnippets[section];
+        }
+
+        // Initialize the visualizer
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                // Create visualizer instance
+                const visualizer = new AVLTreeVisualizer();
+                console.log('AVL Tree Visualizer initialized successfully');
+
+                // Add input event listener for Enter key
+                document.getElementById('node-value').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        document.getElementById('insert-btn').click();
+                    }
+                });
+            } catch (error) {
+                console.error('Error initializing AVL Tree Visualizer:', error);
+            }
+        });
+    </script>
+</body>
+</html> 

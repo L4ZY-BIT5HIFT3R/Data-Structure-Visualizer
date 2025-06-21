@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Structure Visualizer</title>
+    <link rel="stylesheet" href="main_styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="main-container">
+        <div class="hero-section">
+            <h1>Data Structure Visualizer</h1>
+            <p>Select a data structure to visualize and interact with</p>
+        </div>
+        
+        <div class="cards-container">
+            <!-- Stack Card -->
+            <div class="card" onclick="location.href='stack.html'">
+                <div class="card-icon">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                <div class="card-content">
+                    <h2>Stack</h2>
+                    <p>Last-In-First-Out (LIFO) data structure with push and pop operations</p>
+                    <ul>
+                        <li>Push: Add to top</li>
+                        <li>Pop: Remove from top</li>
+                        <li>Peek: View top element</li>
+                    </ul>
+                </div>
+                <div class="card-button">
+                    <button>Visualize Stack</button>
+                </div>
+            </div>
+            
+            <!-- Linked List Card -->
+            <div class="card" onclick="location.href='linked_list.html'">
+                <div class="card-icon">
+                    <i class="fas fa-link"></i>
+                </div>
+                <div class="card-content">
+                    <h2>Linked List</h2>
+                    <p>Sequential collection of elements with nodes and pointers</p>
+                    <ul>
+                        <li>Insert: At beginning, end or position</li>
+                        <li>Delete: From beginning, end or position</li>
+                        <li>Search: Find elements</li>
+                    </ul>
+                </div>
+                <div class="card-button">
+                    <button>Visualize Linked List</button>
+                </div>
+            </div>
+            
+            <!-- AVL Tree Card -->
+            <div class="card" onclick="location.href='avl_tree.html'">
+                <div class="card-icon">
+                    <i class="fas fa-sitemap"></i>
+                </div>
+                <div class="card-content">
+                    <h2>AVL Tree</h2>
+                    <p>Self-balancing binary search tree with automatic height balancing</p>
+                    <ul>
+                        <li>Insert: Auto-balancing nodes</li>
+                        <li>Delete: Maintains balance</li>
+                        <li>Search: O(log n) efficiency</li>
+                        <li>Balance: Automatic rotations</li>
+                    </ul>
+                </div>
+                <div class="card-button">
+                    <button>Visualize AVL Tree</button>
+                </div>
+            </div>
+            
+            <!-- Hash Table Card -->
+            <div class="card coming-soon">
+                <div class="card-icon">
+                    <i class="fas fa-table"></i>
+                </div>
+                <div class="card-content">
+                    <h2>Hash Table</h2>
+                    <p>Key-value store with efficient lookup operations</p>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="card-button">
+                    <button disabled>Visualize Hash Table</button>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Created with <i class="fas fa-heart"></i> for Data Structures Learning</p>
+            <p>&copy; 2025 Data Structure Visualizer</p>
+        </footer>
+    </div>
+</body>
+</html> 

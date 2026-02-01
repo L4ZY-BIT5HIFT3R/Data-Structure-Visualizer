@@ -1,4 +1,4 @@
-// AVL Tree Visualization
+// AVL tree + UI
 class AVLTreeVisualizer {
     constructor() {
         this.tree = new AVLTree();
@@ -7,25 +7,22 @@ class AVLTreeVisualizer {
         this.resultContent = document.getElementById('result-content');
         this.treeHeight = document.getElementById('tree-height');
         this.nodeCount = document.getElementById('node-count');
-        
-        // Create tooltip element
+
+        // tooltip for balance info
         this.tooltip = document.createElement('div');
         this.tooltip.className = 'node-tooltip';
         document.body.appendChild(this.tooltip);
 
-        // Add scroll event listener to update tooltip position
         this.visualization.addEventListener('scroll', () => {
             if (this.tooltip.classList.contains('visible')) {
                 this.tooltip.classList.remove('visible');
             }
         });
-        
-        // Initialize event listeners
+
         this.initializeEventListeners();
     }
 
     initializeEventListeners() {
-        // Insert button
         document.getElementById('insert-btn').addEventListener('click', () => {
             const value = parseInt(this.nodeValueInput.value);
             if (!isNaN(value)) {
@@ -35,7 +32,6 @@ class AVLTreeVisualizer {
             }
         });
 
-        // Delete button
         document.getElementById('delete-btn').addEventListener('click', () => {
             const value = parseInt(this.nodeValueInput.value);
             if (!isNaN(value)) {
@@ -45,7 +41,6 @@ class AVLTreeVisualizer {
             }
         });
 
-        // Search button
         document.getElementById('search-btn').addEventListener('click', () => {
             const value = parseInt(this.nodeValueInput.value);
             if (!isNaN(value)) {
@@ -55,14 +50,8 @@ class AVLTreeVisualizer {
             }
         });
 
-        // Clear button
         document.getElementById('clear-btn').addEventListener('click', () => {
             this.clear();
-        });
-
-        // Theme toggle
-        document.querySelector('.theme-toggle').addEventListener('click', () => {
-            document.body.classList.toggle('dark-theme');
         });
     }
 
@@ -102,44 +91,35 @@ class AVLTreeVisualizer {
 
     visualize() {
         try {
-            // Clear previous visualization
             this.visualization.innerHTML = '';
-            
+
             if (!this.tree.root) {
                 this.updateTreeInfo();
                 return;
             }
 
-            // Calculate tree dimensions
             const height = this.tree.getHeight(this.tree.root);
-            const levelHeight = 150; // Increased vertical space between levels
-            const nodeRadius = 45; // Significantly increased node radius for better visibility
+            const levelHeight = 150;
+            const nodeRadius = 45;
 
-            // Calculate the width needed based on the number of possible nodes at the deepest level
             const maxNodesAtBottom = Math.pow(2, height - 1);
-            const minSpacing = nodeRadius * 6; // Increased minimum space between nodes
+            const minSpacing = nodeRadius * 6;
             const totalWidth = maxNodesAtBottom * minSpacing * 2;
-            
-            // Create SVG with proper viewBox for scaling
+
             const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
             svg.setAttribute('width', '100%');
             svg.setAttribute('height', `${height * levelHeight + 250}`);
-            
-            // Set viewBox to ensure the tree fits and centers properly
-            const viewBoxWidth = Math.max(totalWidth, 1400); // Increased minimum width
+
+            const viewBoxWidth = Math.max(totalWidth, 1400);
             const viewBoxHeight = height * levelHeight + 250;
             svg.setAttribute('viewBox', `${-viewBoxWidth/2} 0 ${viewBoxWidth} ${viewBoxHeight}`);
             svg.style.maxHeight = '90vh';
-            
-            this.visualization.appendChild(svg);
 
-            // Draw tree recursively starting from root
+            this.visualization.appendChild(svg);
             this.drawNode(svg, this.tree.root, 0, -viewBoxWidth/2, viewBoxWidth/2, levelHeight, nodeRadius);
-            
-            // Update tree info
             this.updateTreeInfo();
         } catch (error) {
-            console.error('Error visualizing tree:', error);
+            console.error('Error drawing tree:', error);
             this.showResult('Error visualizing tree', 'error');
         }
     }
@@ -150,14 +130,13 @@ class AVLTreeVisualizer {
         const x = (left + right) / 2;
         const y = level * levelHeight + nodeRadius * 2;
 
-        // Draw connections to children first
+        // draw lines to kids first so they're behind the circles
         if (node.left) {
             const leftX = (left + x) / 2;
             const leftY = (level + 1) * levelHeight + nodeRadius * 2;
             this.drawConnection(svg, x, y, leftX, leftY);
             this.drawNode(svg, node.left, level + 1, left, x, levelHeight, nodeRadius);
         }
-
         if (node.right) {
             const rightX = (x + right) / 2;
             const rightY = (level + 1) * levelHeight + nodeRadius * 2;
@@ -165,12 +144,10 @@ class AVLTreeVisualizer {
             this.drawNode(svg, node.right, level + 1, x, right, levelHeight, nodeRadius);
         }
 
-        // Create a group for the node
         const nodeGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
         nodeGroup.setAttribute('class', 'node-group');
         nodeGroup.setAttribute('data-value', node.value);
 
-        // Draw node circle
         const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         circle.setAttribute('cx', x);
         circle.setAttribute('cy', y);
@@ -178,7 +155,6 @@ class AVLTreeVisualizer {
         circle.setAttribute('class', 'tree-node');
         nodeGroup.appendChild(circle);
 
-        // Draw node value
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         text.setAttribute('x', x);
         text.setAttribute('y', y);
@@ -190,12 +166,10 @@ class AVLTreeVisualizer {
         text.textContent = node.value;
         nodeGroup.appendChild(text);
 
-        // Calculate heights and balance factor
         const leftHeight = node.left ? this.tree.getHeight(node.left) : 0;
         const rightHeight = node.right ? this.tree.getHeight(node.right) : 0;
         const balance = rightHeight - leftHeight;
 
-        // Draw balance factor
         if (balance !== 0) {
             const balanceText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
             balanceText.setAttribute('x', x + nodeRadius * 1.3);
@@ -205,32 +179,24 @@ class AVLTreeVisualizer {
             nodeGroup.appendChild(balanceText);
         }
 
-        // Add hover events for tooltip with detailed balance information
         let tooltipTimeout;
         nodeGroup.addEventListener('mouseenter', (e) => {
             clearTimeout(tooltipTimeout);
-            
             const rect = nodeGroup.getBoundingClientRect();
             const centerX = rect.left + (rect.width / 2);
             const topY = rect.top;
-            
-            // Create detailed balance information
             const balanceInfo = `Value: ${node.value}
 Left Height: ${leftHeight}
 Right Height: ${rightHeight}
 Balance Factor: ${balance}
 ${this.getBalanceStatus(balance)}`;
-            
             this.tooltip.innerHTML = balanceInfo.replace(/\n/g, '<br>');
             this.tooltip.style.left = `${centerX}px`;
             this.tooltip.style.top = `${topY}px`;
-            
-            // Small delay to ensure smooth animation
             requestAnimationFrame(() => {
                 this.tooltip.classList.add('visible');
             });
         });
-
         nodeGroup.addEventListener('mouseleave', () => {
             tooltipTimeout = setTimeout(() => {
                 this.tooltip.classList.remove('visible');
@@ -240,10 +206,9 @@ ${this.getBalanceStatus(balance)}`;
         svg.appendChild(nodeGroup);
     }
 
-    // Helper function to adjust text size based on content length
     getTextSize(text) {
         const length = text.length;
-        if (length <= 2) return '28px';  // Further increased font sizes
+        if (length <= 2) return '28px';
         if (length <= 4) return '24px';
         if (length <= 6) return '20px';
         if (length <= 8) return '18px';
@@ -261,13 +226,14 @@ ${this.getBalanceStatus(balance)}`;
     }
 
     highlightNode(value) {
-        const nodes = document.querySelectorAll('.tree-node');
-        nodes.forEach(node => {
-            if (parseInt(node.getAttribute('data-value')) === value) {
-                node.classList.add('highlighted');
-                setTimeout(() => {
-                    node.classList.remove('highlighted');
-                }, 1000);
+        const groups = document.querySelectorAll('.node-group');
+        groups.forEach(grp => {
+            if (parseInt(grp.getAttribute('data-value')) === value) {
+                const circle = grp.querySelector('.tree-node');
+                if (circle) {
+                    circle.classList.add('highlighted');
+                    setTimeout(() => circle.classList.remove('highlighted'), 1000);
+                }
             }
         });
     }
@@ -283,7 +249,6 @@ ${this.getBalanceStatus(balance)}`;
         this.nodeCount.textContent = this.tree.getNodeCount();
     }
 
-    // Helper function to get balance status description
     getBalanceStatus(balance) {
         if (balance === 0) return "Status: Perfectly balanced";
         if (balance === 1 || balance === -1) return "Status: Balanced";
@@ -293,12 +258,11 @@ ${this.getBalanceStatus(balance)}`;
     }
 }
 
-// Theme toggle functionality
+// theme stuff
 function initThemeToggle() {
     const themeToggle = document.querySelector('.theme-toggle');
+    if (!themeToggle) return;
     const body = document.body;
-    
-    // Check for saved theme preference
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
         body.classList.add('dark-theme');
@@ -306,8 +270,6 @@ function initThemeToggle() {
     } else {
         themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
     }
-
-    // Toggle theme on click
     themeToggle.addEventListener('click', () => {
         body.classList.toggle('dark-theme');
         const isDark = body.classList.contains('dark-theme');
@@ -316,8 +278,7 @@ function initThemeToggle() {
     });
 }
 
-// Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     initThemeToggle();
     const visualizer = new AVLTreeVisualizer();
-}); 
+});

@@ -87,9 +87,9 @@
         <div class="code-view">
             <h2><i class="fas fa-code"></i> Implementation Code</h2>
             <div class="code-tabs">
-                <button class="tab-btn active" onclick="showCode('node')">Node Class</button>
-                <button class="tab-btn" onclick="showCode('tree')">AVL Tree Class</button>
-                <button class="tab-btn" onclick="showCode('rotations')">Rotations</button>
+                <button class="tab-btn active" onclick="showCode('node', event)">Node Class</button>
+                <button class="tab-btn" onclick="showCode('tree', event)">AVL Tree Class</button>
+                <button class="tab-btn" onclick="showCode('rotations', event)">Rotations</button>
             </div>
             <pre class="code" id="code-content">
 // Node Class Implementation
@@ -110,13 +110,10 @@ class Node {
         <p>Created with <i class="fas fa-heart"></i> using HTML, CSS, and JavaScript</p>
     </footer>
 
-    <!-- Load JavaScript files -->
     <script src="avl_tree_wasm.js"></script>
     <script src="avl_tree_app.js"></script>
-
-    <!-- Code display script -->
     <script>
-        const codeSnippets = {
+        var codeSnippets = {
             node: `// Node Class Implementation
 class Node {
     constructor(value) {
@@ -232,32 +229,21 @@ class AVLTree {
 }`
         };
 
-        function showCode(section) {
-            // Update active tab
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-
-            // Update code content
+        function showCode(section, ev) {
+            var btns = document.querySelectorAll('.tab-btn');
+            for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+            var target = ev && ev.currentTarget ? ev.currentTarget : (ev && ev.target ? ev.target : btns[0]);
+            if (target && target.classList) target.classList.add('active');
             document.getElementById('code-content').textContent = codeSnippets[section];
         }
 
-        // Initialize the visualizer
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', function() {
             try {
-                // Create visualizer instance
-                const visualizer = new AVLTreeVisualizer();
-                console.log('AVL Tree Visualizer initialized successfully');
-
-                // Add input event listener for Enter key
-                document.getElementById('node-value').addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        document.getElementById('insert-btn').click();
-                    }
+                document.getElementById('node-value').addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') document.getElementById('insert-btn').click();
                 });
-            } catch (error) {
-                console.error('Error initializing AVL Tree Visualizer:', error);
+            } catch (err) {
+                console.error('init error:', err);
             }
         });
     </script>

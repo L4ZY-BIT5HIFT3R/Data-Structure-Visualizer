@@ -5,6 +5,7 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* main palette */
 :root {
     --primary-color: #4361ee;
     --secondary-color: #3a0ca3;
@@ -188,7 +189,7 @@ footer i {
     color: #e74c3c;
 }
 
-/* Responsive */
+/* smaller screens */
 @media (max-width: 768px) {
     .main-container {
         padding: 1rem;
@@ -211,7 +212,6 @@ footer i {
     }
 }
 
-/* Animations */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }

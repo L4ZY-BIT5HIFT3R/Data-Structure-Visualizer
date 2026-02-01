@@ -6,7 +6,6 @@
 }
 
 :root {
-    /* Light theme variables */
     --primary-color: #4361ee;
     --secondary-color: #3a0ca3;
     --accent-color: #4cc9f0;
@@ -28,7 +27,6 @@
     --border-radius: 10px;
 }
 
-/* Dark theme variables */
 body.dark-theme {
     --background-color: #1a1a1a;
     --card-color: #2d2d2d;
@@ -269,7 +267,6 @@ footer i {
     font-style: italic;
 }
 
-/* Animations */
 @keyframes slideIn {
     from {
         transform: translateY(-20px);
@@ -292,7 +289,6 @@ footer i {
     }
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .container {
         padding: 1rem;
@@ -317,7 +313,6 @@ footer i {
     }
 }
 
-/* Dark theme specific adjustments */
 body.dark-theme .stack-item {
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
 } 

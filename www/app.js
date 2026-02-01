@@ -1,7 +1,7 @@
-// Load the WebAssembly module
+// wasm module gets loaded here
 let stackModule;
 
-// DOM elements
+// grab refs to the stuff we need
 const stackVisual = document.getElementById('stackVisual');
 const stackSize = document.getElementById('stackSize');
 const stackMaxSize = document.getElementById('stackMaxSize');
@@ -11,29 +11,25 @@ const popBtn = document.getElementById('popBtn');
 const peekBtn = document.getElementById('peekBtn');
 const opResult = document.getElementById('opResult');
 
-// Initialize the UI when the WASM module is loaded
+// once WASM is ready, wire everything up
 StackModule().then(module => {
     stackModule = module;
     stackMaxSize.textContent = stackModule.maxSize();
     updateStackVisualization();
 }).catch(error => {
-    console.error('Failed to load WASM module:', error);
-    document.body.innerHTML = `<div class="error">Failed to load WebAssembly module. Please make sure your browser supports WebAssembly.</div>`;
+    console.error('WASM load failed:', error);
+    document.body.innerHTML = `<div class="error">Couldn't load WebAssembly. Check that your browser supports it.</div>`;
 });
 
-// Update the stack visualization
+// redraw the stack on screen
 function updateStackVisualization() {
-    // Clear the current visualization
     stackVisual.innerHTML = '';
-    
-    // Get the current stack elements
+
     const elements = stackModule.getElements();
     const size = stackModule.size();
-    
-    // Update size display
+
     stackSize.textContent = size;
-    
-    // If stack is empty, show a placeholder
+
     if (size === 0) {
         const emptyMessage = document.createElement('div');
         emptyMessage.className = 'empty-message';
@@ -43,38 +39,37 @@ function updateStackVisualization() {
         stackVisual.appendChild(emptyMessage);
         return;
     }
-    
-    // Create elements for each item in the stack
+
     for (let i = 0; i < size; i++) {
         const stackItem = document.createElement('div');
         stackItem.className = 'stack-item';
         stackItem.textContent = elements[i];
-        
-        // Highlight the top element
+
+        // top of stack gets highlighted
         if (i === size - 1) {
             stackItem.classList.add('top');
         }
-        
+
         stackVisual.appendChild(stackItem);
     }
 }
 
-// Event handlers
+// --- button handlers ---
 pushBtn.addEventListener('click', () => {
     const value = parseInt(valueInput.value);
-    
+
     if (isNaN(value)) {
         opResult.textContent = 'Please enter a valid number';
         return;
     }
-    
+
     if (stackModule.isFull()) {
         opResult.textContent = 'Stack is full (Stack Overflow)';
         return;
     }
-    
+
     const success = stackModule.push(value);
-    
+
     if (success) {
         opResult.textContent = `Pushed ${value} onto the stack`;
         valueInput.value = '';
@@ -89,9 +84,9 @@ popBtn.addEventListener('click', () => {
         opResult.textContent = 'Stack is empty (Stack Underflow)';
         return;
     }
-    
+
     const value = stackModule.pop();
-    
+
     if (value !== -1) {
         opResult.textContent = `Popped ${value} from the stack`;
         updateStackVisualization();
@@ -105,9 +100,9 @@ peekBtn.addEventListener('click', () => {
         opResult.textContent = 'Stack is empty (Cannot peek)';
         return;
     }
-    
+
     const value = stackModule.peek();
-    
+
     if (value !== -1) {
         opResult.textContent = `Top element is ${value}`;
     } else {
@@ -115,9 +110,9 @@ peekBtn.addEventListener('click', () => {
     }
 });
 
-// Add keyboard event listeners
+// enter key = push
 valueInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
         pushBtn.click();
     }
-}); 
+});

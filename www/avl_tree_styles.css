@@ -6,7 +6,6 @@
 }
 
 :root {
-    /* Light theme variables */
     --primary-color: #4361ee;
     --secondary-color: #3a0ca3;
     --accent-color: #4cc9f0;
@@ -30,9 +29,9 @@
     --clear-color: #ff9800;
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --border-radius: 10px;
+    --code-bg: #282c34;
 }
 
-/* Dark theme variables */
 body.dark-theme {
     --background-color: #1a1a1a;
     --card-color: #2d2d2d;
@@ -48,6 +47,7 @@ body.dark-theme {
     --input-border: #444;
     --input-bg: #333;
     --op-group-bg: #333;
+    --code-bg: #1e1e1e;
 }
 
 body {
@@ -56,12 +56,14 @@ body {
     line-height: 1.6;
     min-height: 100vh;
     padding: 0;
+    transition: background-color 0.35s ease, color 0.35s ease;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
+    transition: background-color 0.35s ease, color 0.35s ease;
 }
 
 .header {
@@ -70,7 +72,8 @@ body {
     align-items: center;
     margin-bottom: 2rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--input-border);
+    transition: border-color 0.35s ease;
 }
 
 .back-button {
@@ -122,6 +125,7 @@ h1 {
     box-shadow: var(--shadow);
     display: flex;
     flex-direction: column;
+    transition: background-color 0.35s ease, box-shadow 0.35s ease;
 }
 
 .tree-visualization {
@@ -134,6 +138,7 @@ h1 {
     position: relative;
     min-height: 600px;
     background-color: var(--card-color);
+    transition: background-color 0.35s ease;
 }
 
 .tree-visualization svg {
@@ -147,7 +152,7 @@ h1 {
     fill: var(--node-bg);
     stroke: var(--node-stroke);
     stroke-width: 3;
-    transition: all 0.3s ease;
+    transition: fill 0.35s ease, stroke 0.35s ease, filter 0.35s ease;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
@@ -185,7 +190,7 @@ text {
 .tree-connection {
     stroke: var(--tree-connection);
     stroke-width: 3;
-    transition: all 0.3s ease;
+    transition: stroke 0.35s ease, stroke-opacity 0.35s ease;
     stroke-opacity: 0.8;
 }
 
@@ -196,7 +201,7 @@ text {
     user-select: none;
     filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.4));
     pointer-events: none;
-    transition: all 0.3s ease;
+    transition: fill 0.35s ease, filter 0.35s ease;
 }
 
 .node-group {
@@ -265,14 +270,12 @@ text {
     opacity: 1;
 }
 
-/* Style for balance status in tooltip */
 .node-tooltip br {
     display: block;
     margin: 5px 0;
     content: "";
 }
 
-/* Dark theme tooltip adjustments */
 body.dark-theme .node-tooltip {
     background: var(--card-color);
     border-color: var(--node-stroke);
@@ -292,20 +295,23 @@ body.dark-theme .node-tooltip::before {
     font-weight: bold;
     fill: var(--balance-factor-color) !important;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+    transition: fill 0.35s ease;
 }
 
 .tree-info {
     display: flex;
     justify-content: space-around;
     padding: 10px;
-    background-color: #f5f5f5;
+    background-color: var(--op-group-bg);
     border-radius: var(--border-radius);
     margin-top: 20px;
+    transition: background-color 0.35s ease;
 }
 
 .tree-info p {
     color: var(--text-light);
     font-size: 0.9rem;
+    transition: color 0.35s ease;
 }
 
 .operations {
@@ -315,6 +321,7 @@ body.dark-theme .node-tooltip::before {
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
     margin-bottom: 2rem;
+    transition: background-color 0.35s ease, box-shadow 0.35s ease;
 }
 
 .op-input {
@@ -328,7 +335,7 @@ input[type="number"] {
     border: 1px solid var(--input-border);
     border-radius: var(--border-radius);
     font-size: 1rem;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.35s ease, background-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
     background-color: var(--input-bg);
     color: var(--text-color);
 }
@@ -351,6 +358,7 @@ input[type="number"]:focus {
     background-color: var(--op-group-bg);
     border-radius: var(--border-radius);
     padding: 15px;
+    transition: background-color 0.35s ease;
 }
 
 .op-buttons-group h3 {
@@ -372,7 +380,7 @@ button {
     border: none;
     border-radius: var(--border-radius);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background-color 0.35s ease, transform 0.2s ease;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -406,6 +414,7 @@ button i {
     border: 1px solid var(--input-border);
     border-radius: var(--border-radius);
     overflow: hidden;
+    transition: background-color 0.35s ease, border-color 0.35s ease;
 }
 
 .result-header {
@@ -414,12 +423,14 @@ button i {
     font-weight: 500;
     color: var(--text-color);
     border-bottom: 1px solid var(--input-border);
+    transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease;
 }
 
 .result-content {
     padding: 15px;
     min-height: 30px;
     color: var(--text-color);
+    transition: color 0.35s ease;
 }
 
 .code-view {
@@ -428,6 +439,7 @@ button i {
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
     margin: 2rem 0;
+    transition: background-color 0.35s ease, box-shadow 0.35s ease;
 }
 
 .code-view h2 {
@@ -500,7 +512,6 @@ footer i {
     to { opacity: 0; transform: scale(0.8); }
 }
 
-/* Responsive Design */
 @media (max-width: 1200px) {
     .tree-container {
         min-width: 600px;
@@ -540,7 +551,6 @@ footer i {
     }
 }
 
-/* Dark theme specific adjustments */
 body.dark-theme .tree-node {
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
 }

@@ -6,7 +6,6 @@
 }
 
 :root {
-    /* Light theme variables */
     --primary-color: #4361ee;
     --secondary-color: #3a0ca3;
     --accent-color: #4cc9f0;
@@ -31,7 +30,6 @@
     --border-radius: 10px;
 }
 
-/* Dark theme variables */
 body.dark-theme {
     --background-color: #1a1a1a;
     --card-color: #2d2d2d;
@@ -389,7 +387,6 @@ footer i {
     100% { background-color: var(--insert-color); }
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .container {
         padding: 1rem;
@@ -418,7 +415,6 @@ footer i {
     }
 }
 
-/* Dark theme specific adjustments */
 body.dark-theme .node-data {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }

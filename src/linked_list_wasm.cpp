@@ -4,10 +4,8 @@
 #include <vector>
 #include <string>
 
-// Create a global linked list instance
 LinkedList linkedList(20);
 
-// Define functions to be exposed to JavaScript
 bool isEmpty() {
     return linkedList.isEmpty();
 }
@@ -52,7 +50,6 @@ int search(int value) {
     return linkedList.search(value);
 }
 
-// Helper to get all elements as a vector
 emscripten::val getElements() {
     std::vector<int> elements = linkedList.getElements();
     return emscripten::val(emscripten::typed_memory_view(
@@ -61,12 +58,10 @@ emscripten::val getElements() {
     ));
 }
 
-// Clear the list
 void clear() {
     linkedList.clear();
 }
 
-// Bindings for JavaScript
 EMSCRIPTEN_BINDINGS(linked_list_module) {
     emscripten::function("isEmpty", &isEmpty);
     emscripten::function("isFull", &isFull);
@@ -81,4 +76,4 @@ EMSCRIPTEN_BINDINGS(linked_list_module) {
     emscripten::function("search", &search);
     emscripten::function("getElements", &getElements);
     emscripten::function("clear", &clear);
-} 
+}
